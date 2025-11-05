@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 const { initializeDatabase } = require('./src/database');
 const { getActiveSpaces, getAllSpaces, createSpace, deactivateOldSpaces, getSpaceByEmail } = require('./src/emailSpaces');
 const { saveEmail, getEmailsBySpace } = require('./src/emails');
@@ -9,9 +10,17 @@ const { saveEmail, getEmailsBySpace } = require('./src/emails');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Rate limiting configuration
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per windowMs
+    message: 'Too many requests from this IP, please try again later.'
+});
+
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/api/', apiLimiter); // Apply rate limiting to all API routes
 app.use(express.static(path.join(__dirname, 'public')));
 
 // API Routes
