@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const { initializeDatabase } = require('./src/database');
-const { getActiveSpaces, getAllSpaces, createSpace, deactivateOldSpaces } = require('./src/emailSpaces');
+const { getActiveSpaces, getAllSpaces, createSpace, deactivateOldSpaces, getSpaceByEmail } = require('./src/emailSpaces');
 const { saveEmail, getEmailsBySpace } = require('./src/emails');
 
 const app = express();
@@ -89,7 +89,6 @@ app.post('/api/emails/incoming', async (req, res) => {
 app.get('/api/spaces/:email/emails', async (req, res) => {
     try {
         const { email } = req.params;
-        const { getSpaceByEmail } = require('./src/emailSpaces');
         
         const space = await getSpaceByEmail(email);
         if (!space) {
