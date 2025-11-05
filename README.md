@@ -113,17 +113,42 @@ POST /api/cleanup
 ```
 Deactivates spaces older than 180 days.
 
+## Testing
+
+You can test the API endpoints using curl:
+
+```bash
+# Get all active spaces
+curl http://localhost:3000/api/spaces
+
+# Send a test email to create a new space
+curl -X POST http://localhost:3000/api/emails/incoming \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sender": "test@example.com",
+    "recipient": "newspace@honeypoty.de",
+    "subject": "Test Email",
+    "body": "This is a test"
+  }'
+
+# Get emails for a space
+curl http://localhost:3000/api/spaces/newspace@honeypoty.de/emails
+```
+
 ## Architecture
 
 ### Frontend
 - **HTML/CSS/JS**: Pure vanilla JavaScript for the honeycomb interface
 - **Responsive Design**: Works on desktop and mobile devices
 - **Real-time Updates**: Polls for new spaces every 30 seconds
+- **Hexagonal Layout**: CSS clip-path for true honeycomb cells
 
 ### Backend
 - **Express.js**: REST API server
 - **MySQL**: Database for storing emails and spaces
 - **Auto-cleanup**: Hourly job to deactivate old spaces
+- **Rate Limiting**: 100 requests per 15 minutes per IP
+- **Security**: Environment-based configuration, prepared statements
 
 ### Database Schema
 
@@ -141,6 +166,32 @@ Deactivates spaces older than 180 days.
 - `subject`: Email subject
 - `body`: Email body
 - `received_at`: When the email was received
+
+## How It Works
+
+1. **Initial State**: Application starts with one honeycomb cell showing "start@honeypoty.de"
+2. **Email Reception**: When an email is sent to the `/api/emails/incoming` endpoint with a new recipient address, a new space is created
+3. **Space Creation**: Each new email address gets its own cell in the honeycomb
+4. **Visual Feedback**: Active cells are highlighted and clickable
+5. **Email Client**: Clicking a cell opens your default email client with a mailto: link
+6. **Auto-expiration**: Spaces without activity for 180 days are automatically deactivated
+7. **Cleanup**: Hourly background job removes old spaces from the active honeycomb
+
+## Integration
+
+To integrate Honeypoty with an email server, configure your mail server to forward incoming emails to the API endpoint:
+
+```bash
+POST http://your-server:3000/api/emails/incoming
+Content-Type: application/json
+
+{
+  "sender": "sender@example.com",
+  "recipient": "space@honeypoty.de",
+  "subject": "Email Subject",
+  "body": "Email Body"
+}
+```
 
 ## License
 
