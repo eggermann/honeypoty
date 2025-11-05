@@ -1,0 +1,138 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 40px;
+}
+
+.honeycomb-wrapper {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.honeycomb-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hexagon {
+    position: relative;
+    width: 120px;
+    height: 138px;
+    margin: 20px 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hexagon-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.hexagon-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    background: white;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    border: 4px solid #764ba2;
+    transition: all 0.3s ease;
+}
+
+.hexagon.active .hexagon-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #fff;
+    color: white;
+    font-weight: bold;
+}
+
+.hexagon:hover .hexagon-content {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(118, 75, 162, 0.5);
+}
+
+.hexagon.inactive .hexagon-content {
+    background: #e0e0e0;
+    border-color: #bdbdbd;
+    color: #9e9e9e;
+    cursor: not-allowed;
+}
+
+.hexagon.inactive:hover .hexagon-content {
+    transform: none;
+    box-shadow: none;
+}
+
+.email-text {
+    font-size: 0.85em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.hexagon-border-top,
+.hexagon-border-bottom,
+.hexagon-border-left,
+.hexagon-border-right {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .hexagon {
+        width: 90px;
+        height: 104px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    .honeycomb-wrapper {
+        padding: 20px;
+    }
+    
+    .email-text {
+        font-size: 0.7em;
+    }
+}
